@@ -18,7 +18,6 @@ const generateRefreshToken = () => {
 };
 
 // Save refresh token (hash)
-// Save refresh token (hash)
 async function saveRefreshToken(userId, token, userAgent) {
   const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 hari
