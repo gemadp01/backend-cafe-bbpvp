@@ -1,15 +1,22 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
-    // firstName: { type: String, required: true },
-    // email: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    // isAdmin: { type: Boolean, default: false },
+    passwordHash: { type: String, required: true },
+    email: { type: String, unique: true },
+    namaCafe: { type: String, required: true },
+    lokasiCafe: { type: String, required: true },
+    noTelp: { type: String, required: true },
+    role: { type: String, enum: ["user", "admin"], default: "admin" },
   },
-  { timestamps: true } // otomatis nambah createdAt & updatedAt
+  { timestamps: true } // createdAt & updatedAt
 );
+
+userSchema.methods.comparePassword = function (password) {
+  return bcrypt.compareSync(password, this.passwordHash);
+};
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

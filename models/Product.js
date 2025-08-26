@@ -9,10 +9,13 @@ const productSchema = new mongoose.Schema(
     productImage: { type: String, required: true },
     productStatus: { type: String, required: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    // referencing ke User
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
-
-  // referencing ke User
 );
 
 const Product = mongoose.model("Product", productSchema);
