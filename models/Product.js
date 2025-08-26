@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-c;
 
 const productSchema = new mongoose.Schema(
   {

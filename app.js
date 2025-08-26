@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
-const connectMoongose = require("./config/db");
+const connectMongoose = require("./config/db");
 const productRoutes = require("./routes/productRoutes");
 const port = 3000;
 
-console.log(connectMoongose);
+// console.log(connectMongoose);
 
-connectMoongose();
+connectMongoose();
 app.use(express.json());
 
 // app.use("/api/users", userRoutes);

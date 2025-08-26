@@ -1,15 +1,8 @@
 const mongoose = require("mongoose");
 
-const connectMoongose = async () => {
+const connectMongoose = async () => {
   mongoose
-    .connect(
-      "mongodb://localhost:27017/backend-cafe-bbpvp"
-      // {
-      //     useNewUrlParser: true,
-      //     useUnifiedTopology: true,
-      //     useCreateIndex: true,
-      // }
-    )
+    .connect("mongodb://localhost:27017/backend-cafe-bbpvp")
     .then(() => {
       console.log("Database connected");
     })
@@ -18,4 +11,4 @@ const connectMoongose = async () => {
     });
 };
 
-module.exports = connectMoongose;
+module.exports = connectMongoose;
