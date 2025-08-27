@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const connectMongoose = async () => {
-  mongoose
+  await mongoose
     .connect("mongodb://localhost:27017/backend-cafe-bbpvp")
     .then(() => {
       console.log("Database connected");

@@ -42,16 +42,17 @@ const createProduct = async (req, res) => {
 // Get All Products
 const getProducts = async (req, res) => {
   try {
-    console.log(req.query.search ? true : false);
     if (req.query.search) {
-      const products = await Product.find({ name: req.query.search });
-      console.log(products);
+      const products = await Product.find({
+        productName: { $regex: req.query.search, $options: "i" },
+      }).populate("user", { namaCafe: 1, lokasiCafe: 1, noTelp: 1 });
+      return res.status(200).json(products);
     }
-    return;
+
     const products = await Product.find();
-    res.json(products);
+    return res.status(200).json(products);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
