@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const connectMongoose = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -9,6 +10,8 @@ const port = 3000;
 
 connectMongoose();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
