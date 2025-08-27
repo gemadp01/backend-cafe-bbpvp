@@ -28,9 +28,26 @@ const createProduct = async (req, res) => {
   }
 };
 
+// get all products by query param
+// const getProductsByQuery = async (req, res) => {
+//   try {
+//     console.log(req.query.search);
+//     const products = await Product.find(req.query);
+//     res.json(products);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
+
 // Get All Products
 const getProducts = async (req, res) => {
   try {
+    console.log(req.query.search ? true : false);
+    if (req.query.search) {
+      const products = await Product.find({ name: req.query.search });
+      console.log(products);
+    }
+    return;
     const products = await Product.find();
     res.json(products);
   } catch (err) {
@@ -97,6 +114,7 @@ const deleteProductById = async (req, res) => {
 module.exports = {
   createProduct,
   getProducts,
+  // getProductsByQuery,
   getAllProductsByUserLoggedIn,
   getProductById,
   updateProductById,
