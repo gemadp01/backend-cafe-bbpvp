@@ -10,6 +10,7 @@ const createProduct = async (req, res) => {
       productQuantity,
       productImage,
       productStatus,
+      userId,
     } = req.body;
 
     const product = await Product.create({
@@ -19,6 +20,7 @@ const createProduct = async (req, res) => {
       productQuantity,
       productImage,
       productStatus,
+      user: userId,
     });
     res.status(201).json(product);
   } catch (err) {
@@ -30,6 +32,18 @@ const createProduct = async (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get All Products By User
+const getAllProductsByUserLoggedIn = async (req, res) => {
+  try {
+    const products = await Product.find({ user: req.params.id }).populate(
+      "user"
+    );
     res.json(products);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -83,6 +97,7 @@ const deleteProductById = async (req, res) => {
 module.exports = {
   createProduct,
   getProducts,
+  getAllProductsByUserLoggedIn,
   getProductById,
   updateProductById,
   deleteProductById,
