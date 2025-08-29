@@ -17,7 +17,7 @@ router.get("/:id", getListMejaById);
 // protected
 router.use(auth);
 router.post("/create", createListMeja);
-router.get("/user/:id", getListMejaByUserLoggedIn);
+router.get("/user/login", getListMejaByUserLoggedIn);
 router.put("/:id", updateListMejaById);
 router.delete("/:id", deleteListMejaById);
 

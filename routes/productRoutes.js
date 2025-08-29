@@ -21,9 +21,8 @@ router.get("/:id", getProductById);
 
 // protected
 router.use(auth);
-
-router.post("/create", upload.single("productImage"), createProduct);
-router.get("/user/:id", getAllProductsByUserLoggedIn);
+router.get("/user/login", getAllProductsByUserLoggedIn);
+router.post("/create", createProduct);
 router.put("/:id", updateProductById);
 router.delete("/:id", deleteProductById);
 

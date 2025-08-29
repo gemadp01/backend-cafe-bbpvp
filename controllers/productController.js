@@ -2,27 +2,34 @@ const Product = require("../models/Product.js");
 
 // Create Product
 const createProduct = async (req, res) => {
+  // console.log(req.body);
+  // console.log(req.file);
+
+  const {
+    productName,
+    productCategory,
+    productPrice,
+    productQuantity,
+    productStatus,
+  } = req.body;
+
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  // if (!req.file) {
+  //   return res.status(400).json({ message: "No image uploaded" });
+  // }
+
   try {
-    const {
-      productName,
-      productCategory,
-      productPrice,
-      productQuantity,
-      productImage,
-      productStatus,
-      userId,
-    } = req.body;
-
-    const imagePath = req.file ? req.file.filename : null;
-
     const product = await Product.create({
       productName,
       productCategory,
       productPrice,
       productQuantity,
-      productImage,
+      // productImage: `/uploads/${req.file.filename}`,
       productStatus,
-      user: userId,
+      user: req.user.id,
     });
     res.status(201).json(product);
   } catch (err) {
@@ -61,10 +68,12 @@ const getProducts = async (req, res) => {
 // Get All Products By User
 const getAllProductsByUserLoggedIn = async (req, res) => {
   try {
-    const products = await Product.find({ user: req.params.id }).populate(
-      "user"
-    );
-    res.json(products);
+    // const products = await Product.find({ user: req.user.id }).populate("user");
+    // console.log(req.user);
+    const products = await Product.find({
+      user: req.user.id,
+    });
+    res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
