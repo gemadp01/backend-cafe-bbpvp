@@ -9,6 +9,8 @@ const {
   updateProductById,
   deleteProductById,
 } = require("../controllers/productController");
+const upload = require("../utils/uploadFile");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -18,7 +20,9 @@ router.get("/:id", getProductById);
 // router.get("/", getProductsByQuery);
 
 // protected
-router.post("/", createProduct);
+router.use(auth);
+
+router.post("/create", upload.single("productImage"), createProduct);
 router.get("/user/:id", getAllProductsByUserLoggedIn);
 router.put("/:id", updateProductById);
 router.delete("/:id", deleteProductById);

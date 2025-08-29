@@ -1,8 +1,10 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   try {
+    // console.log(req.body);
     const { username, password, email, namaCafe, lokasiCafe, noTelp } =
       req.body;
     const existingCafe = await User.findOne({ namaCafe });
@@ -24,23 +26,37 @@ const register = async (req, res) => {
   }
 };
 
+const JWT_SECRET = "mysecretkey123";
+
 const login = async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
-  console.log(user.comparePassword(password));
 
+  // cek user ada gak
+  const user = await User.findOne({ username });
   if (!user) {
     return res.status(400).json({ message: "User not found" });
   }
+
+  // cek password
   const isMatch = await user.comparePassword(password);
   if (!isMatch) {
     return res.status(401).json({ message: "Incorrect password" });
   }
-  //   const token = jwt.sign({ id: user._id }, "secretkey", { expiresIn: "1h" });
-  //   res.json({ token });
+
+  // generate token
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+
+  res.json({ token, userId: user._id });
+};
+
+const logout = (req, res) => {
+  res.clearCookie("token");
+
+  res.status(200).json({ message: "Logout successful" });
 };
 
 module.exports = {
   register,
   login,
+  logout,
 };

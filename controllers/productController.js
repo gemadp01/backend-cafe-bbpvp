@@ -13,6 +13,8 @@ const createProduct = async (req, res) => {
       userId,
     } = req.body;
 
+    const imagePath = req.file ? req.file.filename : null;
+
     const product = await Product.create({
       productName,
       productCategory,

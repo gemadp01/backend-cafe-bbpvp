@@ -7,13 +7,17 @@ const {
   updateListMejaById,
   deleteListMejaById,
 } = require("../controllers/listMejaController");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-router.post("/", createListMeja);
 router.get("/", getListMeja);
-router.get("/user/:id", getListMejaByUserLoggedIn);
 router.get("/:id", getListMejaById);
+
+// protected
+router.use(auth);
+router.post("/create", createListMeja);
+router.get("/user/:id", getListMejaByUserLoggedIn);
 router.put("/:id", updateListMejaById);
 router.delete("/:id", deleteListMejaById);
 

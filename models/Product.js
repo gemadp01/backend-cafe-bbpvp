@@ -7,7 +7,11 @@ const productSchema = new mongoose.Schema(
     productPrice: { type: Number, required: true },
     productQuantity: { type: Number, required: true },
     productImage: { type: String, required: true },
-    productStatus: { type: String, required: true },
+    productStatus: {
+      type: String,
+      enum: ["available", "unavailable"],
+      required: true,
+    },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     // referencing ke User
     user: {
