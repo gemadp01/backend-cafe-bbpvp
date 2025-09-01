@@ -44,7 +44,7 @@ const getListMejaByUserLoggedIn = async (req, res) => {
 // get list meja by id
 const getListMejaById = async (req, res) => {
   try {
-    const listMeja = await ListMeja.findById(req.params.id);
+    const listMeja = await ListMeja.find({ user: req.params.id });
     res.status(200).json(listMeja);
   } catch (err) {
     res.status(500).json({ message: err.message });
