@@ -1,15 +1,20 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = "mysecretkey123";
-
 const auth = (req, res, next) => {
+  const JWT_SECRET = process.env.ACCESS_TOKEN_SECRET;
+
+  // ambil token dari header -> Bearer[0] token[1]
   const token = req.header("Authorization")?.split(" ")[1]; // "Bearer token"
-  // console.log(token);
+
+  // cek token
   if (!token)
     return res.status(401).json({ message: "No token, authorization denied" });
 
   try {
+    // cek token validasi
     const verified = jwt.verify(token, JWT_SECRET);
+
+    // tambahkan user dari payload token
     req.user = verified;
 
     next();

@@ -17,8 +17,8 @@ router.get("/:id", getListMejaById);
 // protected
 router.use(auth);
 router.post("/create", createListMeja);
-router.get("/user/login", getListMejaByUserLoggedIn);
-router.put("/:id", updateListMejaById);
-router.delete("/:id", deleteListMejaById);
+router.get("/user/loggedin", getListMejaByUserLoggedIn);
+router.put("/:listMejaId", updateListMejaById);
+router.delete("/:listMejaId", deleteListMejaById);
 
 module.exports = router;

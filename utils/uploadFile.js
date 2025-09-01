@@ -1,5 +1,5 @@
 const multer = require("multer");
-const path = require("path");
+const upload = multer({ dest: "public/uploads/" });
 
 // Set tempat penyimpanan file
 const storage = multer.diskStorage({
@@ -26,9 +26,9 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({
-  storage,
-  fileFilter,
-});
+// const upload = multer({
+//   storage,
+//   fileFilter,
+// });
 
 module.exports = upload;

@@ -26,9 +26,8 @@ const register = async (req, res) => {
   }
 };
 
-const JWT_SECRET = "mysecretkey123";
-
 const login = async (req, res) => {
+  const JWT_SECRET = process.env.ACCESS_TOKEN_SECRET;
   const { username, password } = req.body;
 
   // cek user ada gak
@@ -47,11 +46,10 @@ const login = async (req, res) => {
   const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
 
   res.json({ token, userId: user._id });
+  // res.status(200).json({ message: "Login successful" });
 };
 
 const logout = (req, res) => {
-  res.clearCookie("token");
-
   res.status(200).json({ message: "Logout successful" });
 };
 

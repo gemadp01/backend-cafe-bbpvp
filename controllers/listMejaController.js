@@ -3,7 +3,6 @@ const ListMeja = require("../models/ListMeja.js");
 // create list meja
 const createListMeja = async (req, res) => {
   console.log(req.body);
-
   try {
     const listMeja = await ListMeja.create({
       noMeja: req.body.noMeja,
@@ -12,7 +11,7 @@ const createListMeja = async (req, res) => {
       note: req.body.note,
       user: req.user.id,
     });
-    res.status(201).json(listMeja);
+    res.status(201).json({ message: "List meja created" });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -32,6 +31,10 @@ const getListMeja = async (req, res) => {
 const getListMejaByUserLoggedIn = async (req, res) => {
   try {
     const listMeja = await ListMeja.find({ user: req.user.id });
+    console.log(listMeja);
+    if (listMeja.length === 0) {
+      return res.status(200).json(null);
+    }
     res.status(200).json(listMeja);
   } catch (err) {
     res.status(500).json({ message: err.message });
