@@ -1,4 +1,5 @@
 const Product = require("../models/Product.js");
+const fs = require("fs");
 
 // Create Product
 const createProduct = async (req, res) => {
@@ -118,9 +119,26 @@ const updateProductById = async (req, res) => {
 
 // Delete Product By Id
 const deleteProductById = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.json({ message: "Product deleted!" });
+    const product = await Product.findById(id);
+    if (!product)
+      return res.status(404).json({ message: "Product tidak ditemukan" });
+
+    // jika ada file, hapus dari disk
+    if (product.productImage) {
+      const imagePath =
+        process.cwd() + "/public/uploads/" + product.productImage;
+
+      fs.unlink(imagePath, (err) => {
+        if (err) console.log("Gagal hapus file:", err);
+        else console.log("Berhasil hapus:", imagePath);
+      });
+    }
+
+    await product.deleteOne();
+    res.json({ message: "Product berhasil dihapus" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
