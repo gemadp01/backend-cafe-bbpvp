@@ -1,5 +1,4 @@
 const express = require("express");
-// const Product = require("../models/Product.js");
 const {
   getProducts,
   // getProductsByQuery,
@@ -21,8 +20,8 @@ router.get("/:id", getProductById);
 
 // protected
 router.use(auth);
-router.get("/:id/loggedin", getAllProductsByUserLoggedIn);
-router.post("/create", createProduct);
+router.get("/user/loggedin", getAllProductsByUserLoggedIn);
+router.post("/create", upload.single("productImage"), createProduct);
 router.put("/:id", updateProductById);
 router.delete("/:id", deleteProductById);
 

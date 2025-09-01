@@ -31,7 +31,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use("/uploads", express.static("public/uploads"));
+app.use(express.static("public/uploads"));
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

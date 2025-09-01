@@ -2,14 +2,12 @@ const Product = require("../models/Product.js");
 
 // Create Product
 const createProduct = async (req, res) => {
-  // console.log(req.body);
-  // console.log(req.file);
-
   const {
     productName,
     productCategory,
     productPrice,
     productQuantity,
+    productImage,
     productStatus,
   } = req.body;
 
@@ -27,7 +25,8 @@ const createProduct = async (req, res) => {
       productCategory,
       productPrice,
       productQuantity,
-      // productImage: `/uploads/${req.file.filename}`,
+      // productImage: `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
+      productImage: `${req.file.filename}`,
       productStatus,
       user: req.user.id,
     });
@@ -73,6 +72,9 @@ const getAllProductsByUserLoggedIn = async (req, res) => {
     const products = await Product.find({
       user: req.user.id,
     });
+    if (products.length === 0) {
+      return res.status(200).json(null);
+    }
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ message: err.message });

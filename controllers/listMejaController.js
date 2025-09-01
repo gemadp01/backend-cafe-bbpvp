@@ -31,7 +31,7 @@ const getListMeja = async (req, res) => {
 const getListMejaByUserLoggedIn = async (req, res) => {
   try {
     const listMeja = await ListMeja.find({ user: req.user.id });
-    console.log(listMeja);
+
     if (listMeja.length === 0) {
       return res.status(200).json(null);
     }
