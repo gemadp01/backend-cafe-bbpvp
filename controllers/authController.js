@@ -7,10 +7,31 @@ const register = async (req, res) => {
     // console.log(req.body);
     const { username, password, email, namaCafe, lokasiCafe, noTelp } =
       req.body;
+
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({
+        field: "username",
+        message: "Username sudah digunakan",
+      });
+    }
+
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).json({
+        field: "email",
+        message: "Email sudah digunakan",
+      });
+    }
+
     const existingCafe = await User.findOne({ namaCafe });
     if (existingCafe) {
-      return res.status(400).json({ message: "Cafe already exists" });
+      return res.status(400).json({
+        field: "namaCafe",
+        message: "Cafe sudah terdaftar",
+      });
     }
+
     const passwordHash = await bcrypt.hash(password, 10);
     const user = await User.create({
       username,
@@ -39,7 +60,9 @@ const login = async (req, res) => {
   // cek password
   const isMatch = await user.comparePassword(password);
   if (!isMatch) {
-    return res.status(401).json({ message: "Incorrect password" });
+    return res
+      .status(401)
+      .json({ message: "Username or password is incorrect" });
   }
 
   // generate token
