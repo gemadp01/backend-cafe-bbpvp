@@ -155,14 +155,12 @@ const updateProductById = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if the product belongs to the authenticated user
     if (existingProduct.user.toString() !== req.user.id) {
       return res.status(403).json({
         message: "Access denied. You can only update your own products",
       });
     }
 
-    // Prepare update data
     const updateData = {
       productName,
       productCategory,
@@ -171,15 +169,11 @@ const updateProductById = async (req, res) => {
       productStatus,
     };
 
-    // Handle image update
     if (req.file) {
-      // If new image is uploaded, use the new filename
       updateData.productImage = req.file.filename;
     } else if (productImage) {
-      // If productImage is provided in body (e.g., keeping existing image)
       updateData.productImage = productImage;
     }
-    // If neither req.file nor productImage, keep existing image (don't update)
 
     const product = await Product.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
