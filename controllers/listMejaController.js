@@ -2,11 +2,19 @@ const ListMeja = require("../models/ListMeja.js");
 
 // create list meja
 const createListMeja = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
+  const date = new Date(req.body.waktuPemesanan);
+  const formattedDate = date.toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
   try {
     const listMeja = await ListMeja.create({
       noMeja: req.body.noMeja,
-      waktuPemesanan: req.body.waktuPemesanan,
+      waktuPemesanan: formattedDate,
       status: req.body.status,
       note: req.body.note,
       user: req.user.id,
