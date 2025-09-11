@@ -25,7 +25,7 @@ const createListMeja = async (req, res) => {
   }
 };
 
-// get all list meja
+//! get all list meja (user)
 const getListMeja = async (req, res) => {
   try {
     const listMeja = await ListMeja.find();
@@ -49,7 +49,7 @@ const getListMejaByUserLoggedIn = async (req, res) => {
   }
 };
 
-// get list meja by id
+//! get list meja by id (user)
 const getListMejaById = async (req, res) => {
   try {
     const { page = 1, limit } = req.query;
@@ -80,12 +80,29 @@ const getListMejaById = async (req, res) => {
   // }
 };
 
+// get list meja by specific meja id
+const getListMejaBySpecificMejaId = async (req, res) => {
+  try {
+    const listMeja = await ListMeja.find({ _id: req.params.listMejaId });
+    res.status(200).json(listMeja);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // update list meja by id
 const updateListMejaById = async (req, res) => {
+  // console.log(req.params.listMejaId);
+  // console.log(req.body);
   try {
-    const listMeja = await ListMeja.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const listMeja = await ListMeja.findByIdAndUpdate(
+      req.params.listMejaId,
+      req.body,
+      {
+        new: true,
+      }
+    );
+
     res.status(200).json(listMeja);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -94,9 +111,14 @@ const updateListMejaById = async (req, res) => {
 
 // delete list meja by id
 const deleteListMejaById = async (req, res) => {
+  const { listMejaId } = req.params;
+
   try {
-    await ListMeja.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "List meja deleted!" });
+    const meja = await ListMeja.findById(listMejaId);
+    if (!meja) return res.status(404).json({ message: "Meja tidak ditemukan" });
+
+    await meja.deleteOne();
+    res.json({ message: "Meja berhasil dihapus" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -107,6 +129,7 @@ module.exports = {
   getListMejaById,
   getListMeja,
   getListMejaByUserLoggedIn,
+  getListMejaBySpecificMejaId,
   updateListMejaById,
   deleteListMejaById,
 };

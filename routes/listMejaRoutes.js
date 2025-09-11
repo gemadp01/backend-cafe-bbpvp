@@ -4,6 +4,7 @@ const {
   getListMeja,
   getListMejaByUserLoggedIn,
   getListMejaById,
+  getListMejaBySpecificMejaId,
   updateListMejaById,
   deleteListMejaById,
 } = require("../controllers/listMejaController");
@@ -18,6 +19,7 @@ router.get("/:id", getListMejaById);
 router.use(auth);
 router.post("/create", createListMeja);
 router.get("/user/loggedin", getListMejaByUserLoggedIn);
+router.get("/update/:listMejaId", getListMejaBySpecificMejaId);
 router.put("/:listMejaId", updateListMejaById);
 router.delete("/:listMejaId", deleteListMejaById);
 
