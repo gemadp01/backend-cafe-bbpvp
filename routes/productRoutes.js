@@ -3,6 +3,7 @@ const {
   getProducts,
   // getProductsByQuery,
   getAllProductsByUserLoggedIn,
+  getProductBySpecificId,
   createProduct,
   getProductById,
   updateProductById,
@@ -21,8 +22,9 @@ router.get("/:id", getProductById);
 // protected
 router.use(auth);
 router.get("/user/loggedin", getAllProductsByUserLoggedIn);
+router.get("/update/:id", getProductBySpecificId);
 router.post("/create", upload.single("productImage"), createProduct);
-router.put("/:id", updateProductById);
+router.put("/:id", upload.single("productImage"), updateProductById);
 router.delete("/:id", deleteProductById);
 
 module.exports = router;
