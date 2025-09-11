@@ -53,6 +53,7 @@ const getProducts = async (req, res) => {
   try {
     if (req.query.search) {
       const products = await Product.find({
+        // $regex = regular expression sedangkan $options: "i" artinya case insensitive (tidak peduli huruf besar/kecil)
         productName: { $regex: req.query.search, $options: "i" },
       }).populate("user", { namaCafe: 1, lokasiCafe: 1, noTelp: 1 });
       return res.status(200).json(products);
