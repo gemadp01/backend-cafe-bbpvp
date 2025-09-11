@@ -86,12 +86,33 @@ const getAllProductsByUserLoggedIn = async (req, res) => {
 // Get Product By Id
 const getProductById = async (req, res) => {
   try {
-    const products = await Product.find({ user: req.params.id });
+    const { page = 1, limit } = req.query;
+    const skip = (page - 1) * limit;
 
-    res.status(200).json(products);
+    const query = { user: req.params.id };
+
+    // Ambil data user dengan pagination
+    const products = await Product.find(query).skip(skip).limit(Number(limit));
+
+    // Hitung total data (untuk frontend bikin total pages)
+    const total = await Product.countDocuments(query);
+
+    return res.status(200).json({
+      products,
+      total,
+      page: Number(page),
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+  // try {
+  //   const products = await Product.find({ user: req.params.id });
+
+  //   res.status(200).json(products);
+  // } catch (err) {
+  //   res.status(500).json({ message: err.message });
+  // }
 };
 
 // Update Product By Id
