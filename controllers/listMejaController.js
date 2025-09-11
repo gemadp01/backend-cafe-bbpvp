@@ -52,11 +52,32 @@ const getListMejaByUserLoggedIn = async (req, res) => {
 // get list meja by id
 const getListMejaById = async (req, res) => {
   try {
-    const listMeja = await ListMeja.find({ user: req.params.id });
-    res.status(200).json(listMeja);
+    const { page = 1, limit } = req.query;
+    const skip = (page - 1) * limit;
+
+    const query = { user: req.params.id };
+
+    // Ambil data user dengan pagination
+    const listMeja = await ListMeja.find(query).skip(skip).limit(Number(limit));
+
+    // Hitung total data (untuk frontend bikin total pages)
+    const total = await ListMeja.countDocuments(query);
+
+    return res.status(200).json({
+      listMeja,
+      total,
+      page: Number(page),
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+  // try {
+  //   const listMeja = await ListMeja.find({ user: req.params.id });
+  //   res.status(200).json(listMeja);
+  // } catch (err) {
+  //   res.status(500).json({ message: err.message });
+  // }
 };
 
 // update list meja by id
